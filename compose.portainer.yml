@@ -26,7 +26,7 @@ services:
       OPENCLAW_STATE_DIR: /openclaw
     volumes:
       - mission_control_data:/app/.data
-      - openclaw-gateway_openclaw_state:/openclaw:ro
+      - openclaw-gateway_openclaw_state:/openclaw:rw
     extra_hosts:
       - "host.docker.internal:host-gateway"
     networks:
