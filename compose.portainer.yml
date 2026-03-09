@@ -1,0 +1,41 @@
+services:
+  mission-control:
+    container_name: mission-control
+    restart: unless-stopped
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3054:3000"
+    environment:
+      NODE_ENV: production
+      NEXT_TELEMETRY_DISABLED: "1"
+
+      AUTH_USER: ${AUTH_USER}
+      AUTH_PASS: ${AUTH_PASS}
+      API_KEY: ${API_KEY}
+      MC_ALLOWED_HOSTS: ${MC_ALLOWED_HOSTS}
+
+      OPENCLAW_GATEWAY_HOST: ${OPENCLAW_GATEWAY_HOST}
+      OPENCLAW_GATEWAY_PORT: ${OPENCLAW_GATEWAY_PORT}
+      OPENCLAW_GATEWAY_TOKEN: ${OPENCLAW_GATEWAY_TOKEN}
+      NEXT_PUBLIC_GATEWAY_TOKEN: ${NEXT_PUBLIC_GATEWAY_TOKEN}
+
+      OPENCLAW_CONFIG_PATH: /openclaw/openclaw.json
+      OPENCLAW_STATE_DIR: /openclaw
+    volumes:
+      - mission_control_data:/app/.data
+      - openclaw-gateway_openclaw_state:/openclaw:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - nginx_default
+
+volumes:
+  mission_control_data:
+  openclaw-gateway_openclaw_state:
+    external: true
+
+networks:
+  nginx_default:
+    external: true
