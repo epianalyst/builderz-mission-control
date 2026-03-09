@@ -1,6 +1,7 @@
 services:
   mission-control:
     container_name: mission-control
+    user: "0:0"
     restart: unless-stopped
     build:
       context: .
